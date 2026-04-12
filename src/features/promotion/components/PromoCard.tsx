@@ -1,6 +1,7 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import type { PromoProduct } from "../../../shared/types";
 import { formatCurrency } from "../../../shared/utils";
+import { useCartStore } from "../../../store/cartStore";
 
 interface Props {
   promoProduct: PromoProduct;
@@ -30,6 +31,11 @@ const styles = {
 };
 
 export const PromoCard = memo(({ promoProduct, isActive, index }: Props) => {
+  const addItem = useCartStore((state) => state.addItem);
+
+  const handleAdd = useCallback(() => {
+    addItem(promoProduct);
+  }, [addItem, promoProduct]);
   return (
     <div
       key={promoProduct.id}
@@ -68,7 +74,9 @@ export const PromoCard = memo(({ promoProduct, isActive, index }: Props) => {
         </div>
 
         {/* botão "Comprar Agora" */}
-        <button className={styles.button}>Comprar Agora</button>
+        <button className={styles.button} onClick={handleAdd}>
+          Comprar Agora
+        </button>
       </div>
     </div>
   );
