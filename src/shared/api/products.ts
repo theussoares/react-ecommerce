@@ -1,3 +1,4 @@
+import { useProductStore } from "../../store/productStore";
 import type { Product } from "../types";
 
 const BASE_URL = "https://dummyjson.com";
@@ -21,8 +22,12 @@ interface CategoriesResponse {
 }
 
 export const productsApi = {
-  getAll: () =>
-    fetchJSON<ProductsResponse>("/products?limit=100").then((r) => r.products),
+  getAll: async () => {
+    const data = await fetchJSON<ProductsResponse>("/products?limit=100");
+    const products = data.products;
+    useProductStore.setState({ products });
+    return products;
+  },
   getById: (id: number) => fetchJSON<Product>(`/products/${id}`),
   getCategories: () =>
     fetchJSON<CategoriesResponse[]>("/products/categories").then((r) =>
@@ -32,4 +37,6 @@ export const productsApi = {
     fetchJSON<ProductsResponse>(`/products/category/${category}`).then(
       (r) => r.products,
     ),
+  getPromotions: () =>
+    fetchJSON<ProductsResponse>("/products?limit=5").then((r) => r.products),
 };

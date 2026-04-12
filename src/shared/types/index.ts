@@ -6,6 +6,11 @@ export interface Product {
   category: string;
   thumbnail: string;
   rating: number;
+  discountPercentage: number;
+}
+
+export interface PromoProduct extends Product {
+  promoPrice: number;
 }
 
 export interface CartItem {

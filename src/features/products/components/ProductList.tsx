@@ -1,7 +1,8 @@
-import { useProducts, useCategories } from "../hooks/useProducts";
+import { useCategories } from "../../../shared/hooks/useProducts";
 import { useProductFilters } from "../hooks/useProductFilters";
 import { ProductCard } from "./ProductCard";
 import type { SortOption } from "../../../shared/types";
+import { useProductStore } from "../../../store/productStore";
 
 const styles = {
   wrapper: "flex flex-col gap-6",
@@ -11,22 +12,13 @@ const styles = {
   select:
     "text-sm border border-gray-200 rounded-xl py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-300 bg-white",
   grid: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6",
-  status: "text-center text-gray-400 py-20 text-sm",
 };
 
 export function ProductList() {
-  const { data: products, isLoading, isError } = useProducts();
+  const products = useProductStore((state) => state.products);
   const { data: categories } = useCategories();
   const { filters, filtered, setCategory, setSearch, setSort } =
     useProductFilters(products);
-
-  if (isLoading) return <p className={styles.status}>Carregando produtos...</p>;
-  if (isError)
-    return (
-      <p className={styles.status}>
-        Erro ao carregar produtos. Tente novamente.
-      </p>
-    );
 
   return (
     <section className={styles.wrapper}>

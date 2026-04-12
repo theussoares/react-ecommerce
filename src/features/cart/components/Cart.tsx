@@ -7,8 +7,8 @@ interface CartProps {
 }
 
 const styles = {
-  empty: "flex flex-col items-center justify-center h-64 text-gray-400 gap-2",
-  wrapper: "flex flex-col h-full overflow-auto max-h-full lg:max-h-[70vh]",
+  empty: "flex flex-col items-center h-full justify-center text-gray-400 gap-2",
+  wrapper: "flex flex-col h-full overflow-auto max-h-full",
   header: "flex items-center justify-between pb-4 border-b border-gray-100",
   title: "text-lg font-semibold text-gray-900",
   count: "text-sm text-gray-400 font-normal",
