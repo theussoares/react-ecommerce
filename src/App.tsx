@@ -1,10 +1,15 @@
 import { lazy, Suspense, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useProducts } from "./features/products";
 import { useCartStore } from "./store/cartStore";
 import { useBodyScrollLock } from "./shared/hooks/useBodyScrollLock";
-import { useProductStore } from "./store/productStore";
-import { PromoBanner } from "./features/promotion";
+import { HomePage } from "./pages/HomePage";
+import { ProductPage } from "./pages/ProductPage";
+
+// lazy fora do componente — referência estável
+const Cart = lazy(() =>
+  import("./features/cart").then((m) => ({ default: m.Cart })),
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,8 +31,6 @@ const styles = {
     "absolute -top-2 -right-3 bg-gray-900 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center",
   main: "max-w-7xl mx-auto px-2 lg:px-6 py-8 flex flex-col gap-8",
   content: "flex-1 min-w-0",
-  cartPanel:
-    "sticky top-24 bg-white rounded-2xl border border-gray-100 shadow-sm p-6",
   overlay: "fixed inset-0 z-20 bg-black/50",
   drawer:
     "fixed top-0 right-0 z-30 h-full w-88 bg-white shadow-xl px-4 py-6 overflow-y-auto",
@@ -52,58 +55,48 @@ function Header({ onCartClick }: { onCartClick: () => void }) {
   );
 }
 
-export default function App() {
-  const ProductList = lazy(() =>
-    import("./features/products").then((m) => ({ default: m.ProductList })),
-  );
-  const Cart = lazy(() =>
-    import("./features/cart").then((m) => ({ default: m.Cart })),
-  );
-
-  const { isLoading, isError } = useProducts();
-  const products = useProductStore((state) => state.products);
-
+function AppLayout() {
   const [cartOpen, setCartOpen] = useState(false);
   useBodyScrollLock(cartOpen);
 
-  if (isLoading) return <p className={styles.status}>Carregando produtos...</p>;
-  if (isError)
-    return (
-      <p className={styles.status}>
-        Erro ao carregar produtos. Tente novamente.
-      </p>
-    );
+  return (
+    <div className={styles.root}>
+      <Header onCartClick={() => setCartOpen((prev) => !prev)} />
 
+      <main className={styles.main}>
+        <div className={styles.content}>
+          <Suspense fallback={<p className={styles.status}>Carregando...</p>}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/product/:id" element={<ProductPage />} />
+            </Routes>
+          </Suspense>
+        </div>
+      </main>
+
+      {cartOpen && (
+        <Suspense fallback={null}>
+          <>
+            <div
+              className={styles.overlay}
+              onClick={() => setCartOpen(false)}
+            />
+            <div className={styles.drawer}>
+              <Cart onClose={() => setCartOpen(false)} />
+            </div>
+          </>
+        </Suspense>
+      )}
+    </div>
+  );
+}
+
+export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className={styles.root}>
-        <Header onCartClick={() => setCartOpen((prev) => !prev)} />
-
-        <Suspense fallback={<p className={styles.status}>Carregando...</p>}>
-          <main className={styles.main}>
-            <section>
-              <PromoBanner />
-            </section>
-
-            <section className={styles.content}>
-              {products && <ProductList />}
-            </section>
-          </main>
-
-          {/* mobile — drawer + overlay fora do main */}
-          {cartOpen && (
-            <>
-              <div
-                className={styles.overlay}
-                onClick={() => setCartOpen(false)}
-              />
-              <div className={styles.drawer}>
-                <Cart onClose={() => setCartOpen(false)} />
-              </div>
-            </>
-          )}
-        </Suspense>
-      </div>
+      <BrowserRouter>
+        <AppLayout />
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }

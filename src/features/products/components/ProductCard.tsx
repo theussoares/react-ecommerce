@@ -4,6 +4,7 @@ import { useCartStore } from "../../../store/cartStore";
 import { formatCurrency } from "../../../shared/utils/formatCurrency";
 import { calculateDiscount } from "../../../shared/utils/calculateDiscount";
 import { StarIcon } from "./StarIcon";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   product: Product;
@@ -31,6 +32,7 @@ const styles = {
 
 export const ProductCard = memo(({ product }: Props) => {
   const addItem = useCartStore((state) => state.addItem);
+  const navigate = useNavigate();
 
   const handleAdd = useCallback(() => {
     addItem(product);
@@ -42,8 +44,12 @@ export const ProductCard = memo(({ product }: Props) => {
   );
   const hasGoodDiscount = product.discountPercentage > 10;
 
+  const handleNavigate = useCallback(() => {
+    navigate(`/product/${product.id}`);
+  }, [navigate, product.id]);
+
   return (
-    <article className={styles.card}>
+    <article className={styles.card} onClick={handleNavigate}>
       {/* Container da Imagem com Badge */}
       <div className={styles.imageContainer}>
         {hasGoodDiscount && (
@@ -84,7 +90,13 @@ export const ProductCard = memo(({ product }: Props) => {
           </div>
         </div>
 
-        <button onClick={handleAdd} className={styles.btn}>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAdd();
+          }}
+          className={styles.btn}
+        >
           Adicionar
         </button>
       </div>
