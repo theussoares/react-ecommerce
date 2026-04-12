@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ProductList, useProducts } from "./features/products";
-import { Cart } from "./features/cart";
+import { useProducts } from "./features/products";
 import { useCartStore } from "./store/cartStore";
 import { useBodyScrollLock } from "./shared/hooks/useBodyScrollLock";
 import { useProductStore } from "./store/productStore";
@@ -54,6 +53,13 @@ function Header({ onCartClick }: { onCartClick: () => void }) {
 }
 
 export default function App() {
+  const ProductList = lazy(() =>
+    import("./features/products").then((m) => ({ default: m.ProductList })),
+  );
+  const Cart = lazy(() =>
+    import("./features/cart").then((m) => ({ default: m.Cart })),
+  );
+
   const { isLoading, isError } = useProducts();
   const products = useProductStore((state) => state.products);
 
@@ -73,28 +79,30 @@ export default function App() {
       <div className={styles.root}>
         <Header onCartClick={() => setCartOpen((prev) => !prev)} />
 
-        <main className={styles.main}>
-          <section>
-            <PromoBanner />
-          </section>
+        <Suspense fallback={<p className={styles.status}>Carregando...</p>}>
+          <main className={styles.main}>
+            <section>
+              <PromoBanner />
+            </section>
 
-          <section className={styles.content}>
-            {products && <ProductList />}
-          </section>
-        </main>
+            <section className={styles.content}>
+              {products && <ProductList />}
+            </section>
+          </main>
 
-        {/* mobile — drawer + overlay fora do main */}
-        {cartOpen && (
-          <>
-            <div
-              className={styles.overlay}
-              onClick={() => setCartOpen(false)}
-            />
-            <div className={styles.drawer}>
-              <Cart onClose={() => setCartOpen(false)} />
-            </div>
-          </>
-        )}
+          {/* mobile — drawer + overlay fora do main */}
+          {cartOpen && (
+            <>
+              <div
+                className={styles.overlay}
+                onClick={() => setCartOpen(false)}
+              />
+              <div className={styles.drawer}>
+                <Cart onClose={() => setCartOpen(false)} />
+              </div>
+            </>
+          )}
+        </Suspense>
       </div>
     </QueryClientProvider>
   );

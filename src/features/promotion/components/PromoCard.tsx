@@ -47,8 +47,8 @@ export const PromoCard = memo(({ promoProduct, isActive, index }: Props) => {
       <img
         src={promoProduct.thumbnail}
         alt={promoProduct.title}
-        loading={isActive && index === 0 ? "eager" : "lazy"}
-        fetchPriority={index === 0 ? "high" : "low"}
+        loading={isActive && index == 0 ? "eager" : "lazy"}
+        fetchPriority={index == 0 ? "high" : "low"}
         className={styles.image}
       />
 
@@ -57,7 +57,7 @@ export const PromoCard = memo(({ promoProduct, isActive, index }: Props) => {
 
       {/* Informações na Esquerda */}
       <div className={styles.content}>
-        <span className={styles.badge}>Oferta Especial</span>
+        <span className={styles.badge}>Oferta Especial {index}</span>
 
         <h3 className={styles.title}>{promoProduct.title}</h3>
 

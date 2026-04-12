@@ -9,9 +9,9 @@ const styles = {
   bannerWrapper:
     "relative w-full max-w-[1024px] h-[320px] rounded-2xl overflow-hidden shadow-2xl bg-black group",
   controls: "absolute bottom-4 left-8 z-30 flex gap-2",
-  dot: "h-1.5 rounded-full transition-all duration-300 ease-in-out cursor-pointer",
-  dotActive: "w-6 bg-red-500",
-  dotInactive: "w-2 bg-white/30 hover:bg-white/60",
+  dot: "h-1.5 w-6 rounded-full transition-all duration-300 ease-in-out cursor-pointer origin-left",
+  dotActive: "bg-red-500 scale-x-120 opacity-100",
+  dotInactive: "bg-white/30 opacity-60 hover:opacity-90",
   loading: "flex items-center justify-center h-[320px] text-white",
 };
 
