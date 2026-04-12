@@ -5,6 +5,7 @@ import { useCartStore } from "./store/cartStore";
 import { useBodyScrollLock } from "./shared/hooks/useBodyScrollLock";
 import { HomePage } from "./pages/HomePage";
 import { ProductPage } from "./pages/ProductPage";
+import { useProducts } from "./features/products";
 
 // lazy fora do componente — referência estável
 const Cart = lazy(() =>
@@ -56,6 +57,7 @@ function Header({ onCartClick }: { onCartClick: () => void }) {
 }
 
 function AppLayout() {
+  useProducts();
   const [cartOpen, setCartOpen] = useState(false);
   useBodyScrollLock(cartOpen);
 

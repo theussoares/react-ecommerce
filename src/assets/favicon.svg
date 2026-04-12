@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- fundo arredondado -->
+  <rect width="32" height="32" rx="8" fill="#111827"/>
+  
+  <!-- lente -->
+  <circle cx="14" cy="14" r="7" stroke="white" stroke-width="2.5" fill="none"/>
+  
+  <!-- cabo da lupa -->
+  <line x1="19.5" y1="19.5" x2="26" y2="26" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  
+  <!-- carrinho pequeno dentro da lente -->
+  <path d="M10 12h1l1.5 4h3l1-3h-4.5" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="12.5" cy="17" r="0.6" fill="white"/>
+  <circle cx="15" cy="17" r="0.6" fill="white"/>
+</svg>

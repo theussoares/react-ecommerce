@@ -1,9 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useProduct } from "../features/products";
 import { useCartStore } from "../store/cartStore";
 import { formatCurrency } from "../shared/utils/formatCurrency";
 import { calculateDiscount } from "../shared/utils/calculateDiscount";
 import { useCallback, useMemo } from "react";
+import { PageMeta } from "../shared/components/PageMeta";
+import { useProductStore } from "../store/productStore";
 
 const styles = {
   wrapper: "max-w-4xl mx-auto px-6",
@@ -30,8 +31,10 @@ const styles = {
 export function ProductPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data: product, isLoading, isError } = useProduct(Number(id));
+  const products = useProductStore((state) => state.products);
   const addItem = useCartStore((state) => state.addItem);
+
+  const product = products.find((p) => p.id === Number(id));
 
   const hasDiscount = useMemo(
     () => (product?.discountPercentage ?? 0) > 10,
@@ -50,55 +53,59 @@ export function ProductPage() {
     if (product) addItem(product);
   }, [addItem, product]);
 
-  if (isLoading) return <p className={styles.loading}>Carregando produto...</p>;
-  if (isError || !product)
-    return <p className={styles.error}>Produto não encontrado.</p>;
-
   return (
     <div className={styles.wrapper}>
+      <PageMeta
+        title="Início"
+        description="Os melhores produtos com os melhores preços. Eletrônicos, moda, beleza e muito mais."
+      />
       <button onClick={() => navigate(-1)} className={styles.back}>
         ← Voltar
       </button>
 
-      <div className={styles.grid}>
-        <div className={styles.imageWrapper}>
-          <img
-            src={product.thumbnail}
-            alt={product.title}
-            fetchPriority="high"
-            className={styles.image}
-          />
-        </div>
-
-        <div className={styles.info}>
-          <span className={styles.category}>{product.category}</span>
-          <h1 className={styles.title}>{product.title}</h1>
-
-          <div className={styles.rating}>★ {product.rating.toFixed(1)}</div>
-
-          <p className={styles.description}>{product.description}</p>
-
-          <div className={styles.priceWrapper}>
-            {hasDiscount && (
-              <>
-                <span className={styles.oldPrice}>
-                  {formatCurrency(product.price)}
-                </span>
-                <span className={styles.discount}>
-                  -{Math.round(product.discountPercentage)}% OFF
-                </span>
-              </>
-            )}
-            <span className={styles.price}>
-              {formatCurrency(hasDiscount ? discountedPrice : product.price)}
-            </span>
+      {product ? (
+        <div className={styles.grid}>
+          <div className={styles.imageWrapper}>
+            <img
+              src={product.thumbnail}
+              alt={product.title}
+              fetchPriority="high"
+              className={styles.image}
+            />
           </div>
 
-          <button onClick={handleAdd} className={styles.btn}>
-            Adicionar ao carrinho
-          </button>
+          <div className={styles.info}>
+            <span className={styles.category}>{product.category}</span>
+            <h1 className={styles.title}>{product.title}</h1>
+
+            <div className={styles.rating}>★ {product.rating.toFixed(1)}</div>
+
+            <p className={styles.description}>{product.description}</p>
+
+            <div className={styles.priceWrapper}>
+              {hasDiscount && (
+                <>
+                  <span className={styles.oldPrice}>
+                    {formatCurrency(product.price)}
+                  </span>
+                  <span className={styles.discount}>
+                    -{Math.round(product.discountPercentage)}% OFF
+                  </span>
+                </>
+              )}
+              <span className={styles.price}>
+                {formatCurrency(hasDiscount ? discountedPrice : product.price)}
+              </span>
+            </div>
+
+            <button onClick={handleAdd} className={styles.btn}>
+              Adicionar ao carrinho
+            </button>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className={styles.error}>Produto não encontrado</div>
+      )}
     </div>
   );
 }
