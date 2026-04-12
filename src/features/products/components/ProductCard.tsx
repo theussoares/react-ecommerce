@@ -1,7 +1,7 @@
 import { memo, useCallback } from "react";
 import type { Product } from "../../../shared/types";
 import { useCartStore } from "../../../store/cartStore";
-import { formatCurrency } from "../../../shared/utils";
+import { formatCurrency } from "../../../shared/utils/formatCurrency";
 import { calculateDiscount } from "../../../shared/utils/calculateDiscount";
 
 interface Props {

@@ -1,4 +1,4 @@
-import { formatCurrency } from "../../../shared/utils";
+import { formatCurrency } from "../../../shared/utils/formatCurrency";
 import { useCartStore } from "../../../store/cartStore";
 import { CartItem } from "./CartItem";
 

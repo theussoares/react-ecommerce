@@ -1,7 +1,7 @@
 import { memo, useCallback } from "react";
 import type { PromoProduct } from "../../../shared/types";
-import { formatCurrency } from "../../../shared/utils";
 import { useCartStore } from "../../../store/cartStore";
+import { formatCurrency } from "../../../shared/utils/formatCurrency";
 
 interface Props {
   promoProduct: PromoProduct;

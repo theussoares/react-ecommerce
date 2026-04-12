@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from "react";
 import type { CartItem as CartItemType } from "../../../shared/types";
 import { useCartStore } from "../../../store/cartStore";
-import { formatCurrency } from "../../../shared/utils";
+import { formatCurrency } from "../../../shared/utils/formatCurrency";
 
 interface Props {
   item: CartItemType;

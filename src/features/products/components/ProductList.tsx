@@ -1,8 +1,11 @@
+import { useEffect } from "react";
 import { useCategories } from "../../../shared/hooks/useProducts";
 import { useProductFilters } from "../hooks/useProductFilters";
+import { usePaginatedProducts } from "../hooks/usePaginatedProducts";
+import { useIntersectionObserver } from "../../../shared/hooks/useIntersectionObserver";
 import { ProductCard } from "./ProductCard";
-import type { SortOption } from "../../../shared/types";
 import { useProductStore } from "../../../store/productStore";
+import type { SortOption } from "../../../shared/types";
 
 const styles = {
   wrapper: "flex flex-col gap-6",
@@ -12,6 +15,8 @@ const styles = {
   select:
     "text-sm border border-gray-200 rounded-xl py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-300 bg-white",
   grid: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6",
+  sentinel: "h-10 w-full",
+  loadingMore: "text-center text-gray-400 text-sm py-4",
 };
 
 export function ProductList() {
@@ -19,6 +24,19 @@ export function ProductList() {
   const { data: categories } = useCategories();
   const { filters, filtered, setCategory, setSearch, setSort } =
     useProductFilters(products);
+
+  const { paginated, hasMore, loadMore, reset } =
+    usePaginatedProducts(filtered);
+
+  // reseta paginação quando filtros mudam
+  useEffect(() => {
+    reset();
+  }, [filters, reset]);
+
+  const sentinelRef = useIntersectionObserver({
+    onIntersect: loadMore,
+    enabled: hasMore,
+  });
 
   return (
     <section className={styles.wrapper}>
@@ -55,10 +73,16 @@ export function ProductList() {
       </div>
 
       <div className={styles.grid}>
-        {filtered.map((product) => (
+        {paginated.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
+
+      <div ref={sentinelRef} className={styles.sentinel} />
+
+      {!hasMore && products.length > 0 && (
+        <p className={styles.loadingMore}>Todos os produtos carregados.</p>
+      )}
     </section>
   );
 }

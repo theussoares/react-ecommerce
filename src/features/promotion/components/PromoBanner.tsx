@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import type { PromoProduct } from "../../../shared/types";
-import { calculateDiscount } from "../../../shared/utils/calculateDiscount";
 import { useProductStore } from "../../../store/productStore";
 import { PromoCard } from "./PromoCard";
+import { getPromoProducts } from "../utils/getPromoProducts";
 
 const styles = {
   container: "w-full flex justify-center px-4",
@@ -19,17 +19,7 @@ export const PromoBanner = () => {
   const products = useProductStore((state) => state.products);
   const [currentIndex, setCurrentIndex] = useState(0);
   const promoProducts = useMemo<PromoProduct[]>(
-    () =>
-      products
-        .sort((a, b) => b.discountPercentage - a.discountPercentage)
-        .slice(0, 5)
-        .map((product) => ({
-          ...product,
-          promoPrice: calculateDiscount(
-            product.price,
-            product.discountPercentage,
-          ),
-        })),
+    () => getPromoProducts(products),
     [products],
   );
 
