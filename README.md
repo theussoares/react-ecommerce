@@ -2,7 +2,7 @@
 
 Um front-end de e-commerce moderno e performático construído com as tecnologias mais recentes do ecossistema React. O projeto serve como um exemplo prático de uma arquitetura escalável e baseada em features, utilizando Vite, TypeScript, Zustand, React Query e Tailwind CSS.
 
-![Prévia do Projeto](![performance A](./public/image.png))
+![performance A](./public/image.png)
 
 [**Acessar o Deploy**](https://shoplens-nine.vercel.app/)
 
