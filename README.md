@@ -1,173 +1,76 @@
-# React E-commerce
+# ShopLens: React E-commerce
 
-Um front-end de e-commerce moderno e performático construído com as tecnologias mais recentes do ecossistema React. O projeto serve como um exemplo prático de uma arquitetura escalável e baseada em features, utilizando Vite, TypeScript, Zustand, React Query e Tailwind CSS.
+A fast, modern e-commerce front-end built with React 18, Vite, TypeScript, Zustand, React Query and Tailwind CSS. It is a practical example of a scalable, feature-based architecture with a focus on performance.
 
-![performance A](./public/image.png)
+**Live demo:** https://shoplens-nine.vercel.app
 
-[**Acessar o Deploy**](https://shoplens-nine.vercel.app/)
+![Lighthouse performance](public/image.png)
 
-## ✨ Features
+## Features
 
-- **Listagem de Produtos:** Navegação por uma lista de produtos com paginação e scroll infinito.
-- **Busca Dinâmica:** Filtro de produtos em tempo real com debounce para otimizar as chamadas à API.
-- **Carrinho de Compras:** Adicione e gerencie produtos no carrinho com estado global persistente.
-- **Design Responsivo:** Interface totalmente adaptável para desktops, tablets e dispositivos móveis.
-- **Performance Otimizada:**
-  - Carregamento lento (lazy loading) de imagens.
-  - Virtualização de listas para renderizar apenas itens visíveis.
-  - Memoização de componentes para evitar re-renderizações desnecessárias.
-  - Cache de API com React Query para uma experiência de usuário mais rápida.
+- **Product listing** with pagination and infinite scroll.
+- **Live search** with debounce to reduce API calls.
+- **Shopping cart** with persistent global state.
+- **Responsive design** for desktop, tablet and mobile.
+- **Performance work:**
+  - Lazy-loaded images
+  - List virtualization (only visible items are rendered)
+  - Component memoization to avoid unnecessary re-renders
+  - API caching with React Query
 
-## 🛠️ Tecnologias Utilizadas
+## Tech stack
 
-- **Framework:** [React 18](https://reactjs.org/)
-- **Build Tool:** [Vite](https://vitejs.dev/)
-- **Linguagem:** [TypeScript](https://www.typescriptlang.org/)
-- **Estilização:** [Tailwind CSS](https://tailwindcss.com/)
-- **Gerenciamento de Estado:** [Zustand](https://github.com/pmndrs/zustand)
-- **Data Fetching & Cache:** [React Query](https://tanstack.com/query/v4/)
-- **API:** [DummyJSON](https://dummyjson.com/) (API REST de exemplo)
+| Area | Technology |
+|---|---|
+| Framework | React 18 |
+| Build tool | Vite |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| State | Zustand |
+| Data fetching and cache | TanStack React Query |
+| API | [DummyJSON](https://dummyjson.com/) |
 
-## 📂 Arquitetura
+## Architecture
 
-O projeto segue uma arquitetura **feature-based**, onde a lógica, os componentes e os hooks são agrupados por funcionalidade (ex: `products`, `cart`). Isso promove a coesão e o baixo acoplamento, facilitando a manutenção e a escalabilidade.
+Feature-based: logic, components and hooks are grouped by feature (`products`, `cart`), which keeps coupling low and makes the codebase easier to scale.
 
 ```
 src/
 ├── features/
-│   ├── products/   # Feature de Produtos
-│   └── cart/       # Feature do Carrinho
+│   ├── products/   # product listing, search, infinite scroll
+│   └── cart/       # cart UI and logic
 ├── shared/
-│   ├── api/        # Camada de acesso à API
-│   ├── hooks/      # Hooks reutilizáveis
-│   ├── types/      # Tipos e interfaces do domínio
-│   └── utils/      # Funções utilitárias puras
-├── store/          # Stores globais (Zustand)
-├── App.tsx         # Componente raiz
-└── main.tsx        # Ponto de entrada da aplicação
+│   ├── api/        # API access layer
+│   ├── hooks/      # reusable hooks
+│   ├── types/      # domain types
+│   └── utils/      # pure helpers
+├── store/          # global stores (Zustand)
+├── App.tsx
+└── main.tsx
 ```
 
-## 🚀 Rodando o Projeto
+## Getting started
 
-Siga os passos abaixo para executar o projeto em seu ambiente de desenvolvimento.
-
-### Pré-requisitos
-
-- [Node.js](https://nodejs.org/en/) (versão 18 ou superior)
-- [pnpm](https://pnpm.io/) (ou `npm`/`yarn`)
-
-### Instalação
-
-1. Clone o repositório:
-
-   ```bash
-   git clone https://github.com/seu-usuario/react-ecommerce.git
-   ```
-
-2. Navegue até o diretório do projeto:
-
-   ```bash
-   cd react-ecommerce
-   ```
-
-3. Instale as dependências:
-   ```bash
-   pnpm install
-   ```
-
-### Execução
-
-Para iniciar o servidor de desenvolvimento, execute:
+Requirements: Node.js 18+ and pnpm (or npm/yarn).
 
 ```bash
-pnpm dev
+git clone https://github.com/theussoares/react-ecommerce.git
+cd react-ecommerce
+pnpm install
+pnpm dev        # http://localhost:5173
 ```
 
-A aplicação estará disponível em `http://localhost:5173`.
+## Scripts
 
-## 📜 Scripts Disponíveis
+| Command | Description |
+|---|---|
+| `pnpm dev` | Start the Vite dev server |
+| `pnpm build` | Production build |
+| `pnpm preview` | Preview the production build |
+| `pnpm lint` | Run ESLint |
 
-- `pnpm dev`: Inicia o servidor de desenvolvimento com Vite.
-- `pnpm build`: Compila o projeto para produção.
-- `pnpm preview`: Inicia um servidor local para visualizar a build de produção.
-- `pnpm lint`: Executa o ESLint para analisar o código em busca de problemas.
+## Contributing
 
-## 🤝 Contribuições
+Issues and pull requests are welcome.
 
-Contribuições são bem-vindas! Se você encontrar um bug ou tiver uma sugestão de melhoria, sinta-se à vontade para abrir uma **Issue** ou um **Pull Request**.
-
----
-
-Feito com ❤️ por [Matheus Soares](https://github.com/theussoares).
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+Built by [Matheus Soares](https://github.com/theussoares).
